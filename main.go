@@ -115,11 +115,6 @@ func main() {
 				default:
 					continue
 				}
-
-				if char == "q" {
-					loop = false
-				}
-
 			}
 		}
 	}
