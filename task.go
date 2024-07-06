@@ -12,24 +12,25 @@ type Task struct {
 	is_done bool
 }
 
-func (t *Task) Render(idx int, w *goncurses.Window) {
+func (t *Task) Render(w *goncurses.Window, y int) {
 	if !t.is_done {
+		w.Move(y, 3)
 		w.AttrOn(goncurses.A_BOLD)
-		w.Printf("[ ] [%d] %q\n", idx, t.task)
+		w.Printf("[ ] [%d] %q", t.id, t.task)
 		w.AttrOff(goncurses.A_BOLD)
 	}
 }
 
-func (t *Task) RenderDone(idx int, w *goncurses.Window) {
+func (t *Task) RenderDone(w *goncurses.Window, y int) {
 	if t.is_done {
+		w.Move(y, 70)
 		w.AttrOn(goncurses.A_UNDERLINE)
-		w.Printf("[x] [%d] %q\n", idx, t.task)
+		w.Printf("[x] [%d] %q", t.id, t.task)
 		w.AttrOff(goncurses.A_UNDERLINE)
 	}
 }
 
-func (t *Task) Mark(conn *sql.DB, id int) {
-	t.is_done = !t.is_done
-
-	UpdateStatus(conn, id, t.is_done)
+func TaskChangeStatus(conn *sql.DB, id int) {
+	status := CurrentStatus(conn, id)
+	UpdateStatus(conn, id, !status)
 }

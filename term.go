@@ -45,27 +45,22 @@ func InputField(w *goncurses.Window, next_id int) (Task, error) {
 	return Task{}, errors.New("Empty task")
 }
 
-func PlannerList(list []Task, w *goncurses.Window) {
+func PlannerList(tasks []Task, finished []Task, w *goncurses.Window) {
 	w.Clear()
-	header_len := len(ListHeader)
-	_, x := w.MaxYX()
-	w.Move(3, x/2-header_len/2)
-	w.Println(ListHeader)
-	w.Println()
+	w.Move(5, 3)
+	w.Print(ListHeader)
+	w.Move(5, 70)
+	w.Print(DoneTasksHeader)
+	w.Println("")
+	w.Println("")
 
-	for _, task := range list {
-		task.Render(task.id, w)
+	y, _ := w.CursorYX()
+	for n, task := range tasks {
+		task.Render(w, y+n)
 	}
 
-	w.Println("")
-	w.Println("")
-	header_len = len(DoneTasksHeader)
-	w.Move(5+len(list), x/2-header_len/2)
-	w.Println(DoneTasksHeader)
-	w.Println()
-
-	for _, task := range list {
-		task.RenderDone(task.id, w)
+	for n, task := range finished {
+		task.RenderDone(w, y+n)
 	}
 
 	w.Refresh()

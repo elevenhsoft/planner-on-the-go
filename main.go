@@ -30,6 +30,8 @@ func main() {
 
 	conn = db.OpenConn()
 	tasks := GetTasksFromDB(conn)
+	conn = db.OpenConn()
+	finished_tasks := GetFinishedFromDB(conn)
 
 	for loop {
 		switch screen {
@@ -67,8 +69,9 @@ func main() {
 			screen = List
 
 		case List:
-			PlannerList(tasks, src)
+			PlannerList(tasks, finished_tasks, src)
 
+			src.Move(0, 0)
 			src.Print(":")
 			char, _ := src.GetString(1)
 
@@ -94,7 +97,12 @@ func main() {
 				}
 
 				conn := db.OpenConn()
-				tasks[option-1].Mark(conn, int(option))
+				TaskChangeStatus(conn, int(option))
+
+				conn = db.OpenConn()
+				tasks = GetTasksFromDB(conn)
+				conn = db.OpenConn()
+				finished_tasks = GetFinishedFromDB(conn)
 
 				src.Refresh()
 			case "d":
@@ -116,6 +124,8 @@ func main() {
 
 				conn = db.OpenConn()
 				tasks = GetTasksFromDB(conn)
+				conn = db.OpenConn()
+				finished_tasks = GetFinishedFromDB(conn)
 
 				src.Refresh()
 			default:

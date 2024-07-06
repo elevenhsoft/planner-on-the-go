@@ -61,6 +61,26 @@ INSERT INTO tasks (task, is_done) values (?, ?)
 	tx.Commit()
 }
 
+func CurrentStatus(conn *sql.DB, id int) bool {
+	sql := `
+SELECT is_done FROM tasks WHERE id = ?
+	`
+	row, err := conn.Query(sql, id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var is_done bool
+
+	for row.Next() {
+		row.Scan(&is_done)
+
+	}
+
+	return is_done
+}
+
 func UpdateStatus(conn *sql.DB, id int, status bool) {
 	sql := `
 UPDATE tasks SET is_done = ? WHERE id = ?
@@ -79,7 +99,35 @@ DELETE FROM tasks WHERE id = ?
 
 func GetTasksFromDB(conn *sql.DB) []Task {
 	sql := `
-SELECT id, task, is_done FROM tasks
+SELECT id, task, is_done FROM tasks WHERE is_done = 0
+	`
+	rows, err := conn.Query(sql)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var tasks []Task
+
+	for rows.Next() {
+		var id int
+		var task string
+		var is_done bool
+
+		err = rows.Scan(&id, &task, &is_done)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tasks = append(tasks, Task{id: id, task: task, is_done: is_done})
+	}
+
+	return tasks
+}
+
+func GetFinishedFromDB(conn *sql.DB) []Task {
+	sql := `
+SELECT id, task, is_done FROM tasks WHERE is_done = 1
 	`
 	rows, err := conn.Query(sql)
 
