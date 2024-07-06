@@ -10,6 +10,7 @@ const WelcomeHeader = "Planner on the Go"
 const NewTaskHeader = "Add new Task"
 const ListHeader = "Your tasks to-do today!"
 const DoneTasksHeader = "You have done this!"
+const HelpHeader = "Planner on the Go - Help"
 
 func WelcomeScreen(w *goncurses.Window) {
 	w.Clear()
@@ -66,6 +67,27 @@ func PlannerList(list []Task, w *goncurses.Window) {
 	for _, task := range list {
 		task.RenderDone(task.id, w)
 	}
+
+	w.Refresh()
+}
+
+func HelpScreen(w *goncurses.Window) {
+	w.Clear()
+	header_len := len(HelpHeader)
+	_, x := w.MaxYX()
+	w.Move(3, x/2-header_len/2)
+	w.Print(HelpHeader)
+	w.Println("")
+	w.Println("")
+	w.Println("List of possible actions, type the letter and press Enter.")
+	w.Println("Command line starts with : and waits for your input.")
+	w.Println("")
+	w.Println(":? - Show help page")
+	w.Println(":a - Add new task")
+	w.Println(":x - Change task status")
+	w.Println(":d - Delete task")
+	w.Println(":q - Quit app/help page")
+	w.Println("")
 
 	w.Refresh()
 }
