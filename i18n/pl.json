@@ -1,0 +1,23 @@
+{
+	"monday": "Poniedzialek",
+	"tuesday": "Wtorek",
+	"wednesday": "Sroda",
+	"thursday": "Czwartek",
+	"friday": "Piatek",
+	"saturday": "Sobota",
+	"sunday": "Niedziela",
+	"mark_task_info": "Ktore zadanie skonczone? [numer] / 0 - anuluj: ",
+	"delete_task_info": "Usunac? [numer] / 0 - anuluj: ",
+	"new_task_header": "Dodaj nowe Zadanie",
+	"todo_prompt": "Do Zrobienia: ",
+	"list_header": "Zadania do zrobienia dzisiaj!",
+	"done_header": "Ukonczone zadania!",
+	"help_header": "Planner on the Go - Pomoc",
+	"help_info": "Lista mozliwych akcji. Wpisz litere i nacisnij Enter.",
+	"help_cli_info": "Linia komend zaczyna sie od : i czeka na dana komende.",
+	"show_help_page": ":? - Pokaz strone pomocy",
+	"add_new_task_help": ":a - Dodaj nowe zadanie",
+	"change_task_help": ":x - Zmien status zadania",
+	"delete_task_help": ":d - Usun zadanie",
+	"quit_app_help": ":q - Wyjdz z aplikacji/strony pomocy"
+}

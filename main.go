@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/rthornton128/goncurses"
 )
 
@@ -21,6 +22,8 @@ func getCurrentDay() int {
 }
 
 func main() {
+	localization_init()
+
 	db := DBInit()
 	conn := db.OpenConn()
 	TableInit(conn)
@@ -30,6 +33,8 @@ func main() {
 	if err != nil {
 		log.Fatal("init:", err)
 	}
+
+	defer goncurses.End()
 
 	loop := true
 	screen := Welcome
@@ -139,7 +144,8 @@ func main() {
 				selected_day = 7
 			case "x":
 				src.Println("")
-				src.Print("What have you done? [number] / 0 - cancel: ")
+				mark_text, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "mark_task_info"})
+				src.Print(mark_text)
 				selected_task, _ := src.GetString(2)
 				option, err := strconv.ParseInt(selected_task, 0, 8)
 
@@ -162,7 +168,8 @@ func main() {
 				src.Refresh()
 			case "d":
 				src.Println("")
-				src.Print("Delete? [number] / 0 - cancel: ")
+				delete_text, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "delete_task_info"})
+				src.Print(delete_text)
 				selected_task, _ := src.GetString(2)
 				option, err := strconv.ParseInt(selected_task, 0, 8)
 
@@ -189,5 +196,4 @@ func main() {
 		}
 	}
 
-	defer goncurses.End()
 }

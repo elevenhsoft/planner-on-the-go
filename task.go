@@ -25,9 +25,9 @@ func (t *Task) Render(w *goncurses.Window, y int, weekday int) {
 func (t *Task) RenderDone(w *goncurses.Window, y int, weekday int) {
 	if t.is_done && t.day == weekday {
 		w.Move(y, 70)
-		w.AttrOn(goncurses.A_UNDERLINE)
+		w.AttrOn(goncurses.A_DIM)
 		w.Printf("[x] [%d] %q", t.id, t.task)
-		w.AttrOff(goncurses.A_UNDERLINE)
+		w.AttrOff(goncurses.A_DIM)
 	}
 }
 

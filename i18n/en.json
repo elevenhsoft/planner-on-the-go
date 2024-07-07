@@ -1,0 +1,23 @@
+{
+	"monday": "Monday",
+	"tuesday": "Tuesday",
+	"wednesday": "Wednesday",
+	"thursday": "Thursday",
+	"friday": "Friday",
+	"saturday": "Saturday",
+	"sunday": "Sunday",
+	"mark_task_info": "What have you done? [number] / 0 - cancel: ",
+	"delete_task_info": "Delete? [number] / 0 - cancel: ",
+	"new_task_header": "Add new Task",
+	"todo_prompt": "To Do: ",
+	"list_header": "Your tasks to-do this day!",
+	"done_header": "You have done this!",
+	"help_header": "Planner on the Go - Help",
+	"help_info": "List of possible actions, type the letter and press Enter.",
+	"help_cli_info": "Command line starts with : and waits for your input.",
+	"show_help_page": ":? - Show help page",
+	"add_new_task_help": ":a - Add new task",
+	"change_task_help": ":x - Change task status",
+	"delete_task_help": ":d - Delete task",
+	"quit_app_help": ":q - Quit app/help page"
+}
