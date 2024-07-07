@@ -10,10 +10,11 @@ type Task struct {
 	id      int
 	task    string
 	is_done bool
+	day     int
 }
 
-func (t *Task) Render(w *goncurses.Window, y int) {
-	if !t.is_done {
+func (t *Task) Render(w *goncurses.Window, y int, weekday int) {
+	if !t.is_done && t.day == weekday {
 		w.Move(y, 3)
 		w.AttrOn(goncurses.A_BOLD)
 		w.Printf("[ ] [%d] %q", t.id, t.task)
@@ -21,8 +22,8 @@ func (t *Task) Render(w *goncurses.Window, y int) {
 	}
 }
 
-func (t *Task) RenderDone(w *goncurses.Window, y int) {
-	if t.is_done {
+func (t *Task) RenderDone(w *goncurses.Window, y int, weekday int) {
+	if t.is_done && t.day == weekday {
 		w.Move(y, 70)
 		w.AttrOn(goncurses.A_UNDERLINE)
 		w.Printf("[x] [%d] %q", t.id, t.task)

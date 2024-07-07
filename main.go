@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/rthornton128/goncurses"
 )
@@ -13,6 +14,11 @@ const (
 	Form
 	List
 )
+
+func getCurrentDay() int {
+	now := time.Now()
+	return (int(now.Weekday()) + 6) % 7
+}
 
 func main() {
 	db := DBInit()
@@ -27,6 +33,8 @@ func main() {
 
 	loop := true
 	screen := Welcome
+	current_day := getCurrentDay() + 1
+	selected_day := current_day
 
 	conn = db.OpenConn()
 	tasks := GetTasksFromDB(conn)
@@ -45,6 +53,7 @@ func main() {
 			if char == goncurses.KEY_ESC {
 				loop = false
 			}
+
 		case Help:
 			HelpScreen(src)
 
@@ -58,7 +67,15 @@ func main() {
 			}
 
 		case Form:
-			task, err := InputField(src, tasks[len(tasks)-1].id+1)
+			var next_id int
+
+			if len(tasks) > 0 {
+				next_id = tasks[len(tasks)-1].id + 1
+			} else {
+				next_id = 0
+			}
+
+			task, err := InputField(src, next_id)
 
 			if err != nil {
 				screen = List
@@ -66,13 +83,33 @@ func main() {
 				tasks = append(tasks, task)
 
 				conn := db.OpenConn()
-				AddToDB(conn, task)
+				AddToDB(conn, task, selected_day)
 			}
+
+			conn = db.OpenConn()
+			tasks = GetTasksFromDB(conn)
+			conn = db.OpenConn()
+			finished_tasks = GetFinishedFromDB(conn)
 
 			screen = List
 
 		case List:
-			PlannerList(tasks, finished_tasks, src)
+			switch selected_day {
+			case 1:
+				PlannerList(tasks, finished_tasks, 1, src)
+			case 2:
+				PlannerList(tasks, finished_tasks, 2, src)
+			case 3:
+				PlannerList(tasks, finished_tasks, 3, src)
+			case 4:
+				PlannerList(tasks, finished_tasks, 4, src)
+			case 5:
+				PlannerList(tasks, finished_tasks, 5, src)
+			case 6:
+				PlannerList(tasks, finished_tasks, 6, src)
+			case 7:
+				PlannerList(tasks, finished_tasks, 7, src)
+			}
 
 			y, _ := src.MaxYX()
 			src.Move(y-1, 0)
@@ -86,6 +123,20 @@ func main() {
 				screen = Help
 			case "a":
 				screen = Form
+			case "1":
+				selected_day = 1
+			case "2":
+				selected_day = 2
+			case "3":
+				selected_day = 3
+			case "4":
+				selected_day = 4
+			case "5":
+				selected_day = 5
+			case "6":
+				selected_day = 6
+			case "7":
+				selected_day = 7
 			case "x":
 				src.Println("")
 				src.Print("What have you done? [number] / 0 - cancel: ")

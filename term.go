@@ -8,7 +8,7 @@ import (
 
 const WelcomeHeader = "Planner on the Go"
 const NewTaskHeader = "Add new Task"
-const ListHeader = "Your tasks to-do today!"
+const ListHeader = "Your tasks to-do this day!"
 const DoneTasksHeader = "You have done this!"
 const HelpHeader = "Planner on the Go - Help"
 
@@ -45,8 +45,28 @@ func InputField(w *goncurses.Window, next_id int) (Task, error) {
 	return Task{}, errors.New("Empty task")
 }
 
-func PlannerList(tasks []Task, finished []Task, w *goncurses.Window) {
+func PlannerList(tasks []Task, finished []Task, weekday int, w *goncurses.Window) {
 	w.Clear()
+
+	w.AttrOn(goncurses.A_BOLD)
+	switch weekday {
+	case 1:
+		w.MovePrint(2, 3, "Monday")
+	case 2:
+		w.MovePrint(2, 3, "Tuesday")
+	case 3:
+		w.MovePrint(2, 3, "Wednesday")
+	case 4:
+		w.MovePrint(2, 3, "Thursday")
+	case 5:
+		w.MovePrint(2, 3, "Friday")
+	case 6:
+		w.MovePrint(2, 3, "Saturday")
+	case 7:
+		w.MovePrint(2, 3, "Sunday")
+	}
+	w.AttrOff(goncurses.A_BOLD)
+
 	w.Move(5, 3)
 	w.Print(ListHeader)
 	w.Move(5, 70)
@@ -55,12 +75,20 @@ func PlannerList(tasks []Task, finished []Task, w *goncurses.Window) {
 	w.Println("")
 
 	y, _ := w.CursorYX()
-	for n, task := range tasks {
-		task.Render(w, y+n)
+	task_counter := 0
+	for _, task := range tasks {
+		if task.day == weekday {
+			task_counter++
+		}
+		task.Render(w, y+task_counter, weekday)
 	}
 
-	for n, task := range finished {
-		task.RenderDone(w, y+n)
+	task_counter = 0
+	for _, task := range finished {
+		if task.day == weekday {
+			task_counter++
+		}
+		task.RenderDone(w, y+task_counter, weekday)
 	}
 
 	w.Refresh()

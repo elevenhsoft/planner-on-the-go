@@ -37,19 +37,19 @@ func (d *DB) OpenConn() *sql.DB {
 
 func TableInit(conn *sql.DB) {
 	sql := `
-CREATE TABLE IF NOT EXISTS tasks (id integer not null primary key, task text, is_done text);
+CREATE TABLE IF NOT EXISTS tasks (id integer not null primary key, task text, is_done text, day int);
 	`
 	conn.Exec(sql)
 	defer conn.Close()
 }
 
-func AddToDB(conn *sql.DB, task Task) {
+func AddToDB(conn *sql.DB, task Task, day int) {
 	tx, err := conn.Begin()
 	if err != nil {
 		log.Fatal(err)
 	}
 	sql := `
-INSERT INTO tasks (task, is_done) values (?, ?)
+INSERT INTO tasks (task, is_done, day) values (?, ?, ?)
 	`
 	stmt, err := tx.Prepare(sql)
 	if err != nil {
@@ -57,7 +57,7 @@ INSERT INTO tasks (task, is_done) values (?, ?)
 	}
 	defer stmt.Close()
 
-	stmt.Exec(task.task, task.is_done)
+	stmt.Exec(task.task, task.is_done, day)
 	tx.Commit()
 }
 
@@ -99,7 +99,7 @@ DELETE FROM tasks WHERE id = ?
 
 func GetTasksFromDB(conn *sql.DB) []Task {
 	sql := `
-SELECT id, task, is_done FROM tasks WHERE is_done = 0
+SELECT id, task, is_done, day FROM tasks WHERE is_done = 0
 	`
 	rows, err := conn.Query(sql)
 
@@ -113,13 +113,14 @@ SELECT id, task, is_done FROM tasks WHERE is_done = 0
 		var id int
 		var task string
 		var is_done bool
+		var day int
 
-		err = rows.Scan(&id, &task, &is_done)
+		err = rows.Scan(&id, &task, &is_done, &day)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		tasks = append(tasks, Task{id: id, task: task, is_done: is_done})
+		tasks = append(tasks, Task{id: id, task: task, is_done: is_done, day: day})
 	}
 
 	return tasks
@@ -127,7 +128,7 @@ SELECT id, task, is_done FROM tasks WHERE is_done = 0
 
 func GetFinishedFromDB(conn *sql.DB) []Task {
 	sql := `
-SELECT id, task, is_done FROM tasks WHERE is_done = 1
+SELECT id, task, is_done, day FROM tasks WHERE is_done = 1
 	`
 	rows, err := conn.Query(sql)
 
@@ -141,13 +142,14 @@ SELECT id, task, is_done FROM tasks WHERE is_done = 1
 		var id int
 		var task string
 		var is_done bool
+		var day int
 
-		err = rows.Scan(&id, &task, &is_done)
+		err = rows.Scan(&id, &task, &is_done, &day)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		tasks = append(tasks, Task{id: id, task: task, is_done: is_done})
+		tasks = append(tasks, Task{id: id, task: task, is_done: is_done, day: day})
 	}
 
 	return tasks
