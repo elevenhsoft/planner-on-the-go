@@ -19,5 +19,7 @@
 	"add_new_task_help": ":a - Dodaj nowe zadanie",
 	"change_task_help": ":x - Zmien status zadania",
 	"delete_task_help": ":d - Usun zadanie",
+	"select_today_help": ":0 - Wybierz dzisiejszy dzien do pracy",
+	"select_day_help": ":1-7 - Wybierz dzien tygodnia zaczynajac od Poniedzialku",
 	"quit_app_help": ":q - Wyjdz z aplikacji/strony pomocy"
 }

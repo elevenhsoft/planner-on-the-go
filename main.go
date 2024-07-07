@@ -128,6 +128,8 @@ func main() {
 				screen = Help
 			case "a":
 				screen = Form
+			case "0":
+				selected_day = current_day
 			case "1":
 				selected_day = 1
 			case "2":

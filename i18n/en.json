@@ -19,5 +19,7 @@
 	"add_new_task_help": ":a - Add new task",
 	"change_task_help": ":x - Change task status",
 	"delete_task_help": ":d - Delete task",
+	"select_today_help": ":0 - Select today as day to work with",
+	"select_day_help": ":1-7 - Select week day to work with starting from Monday",
 	"quit_app_help": ":q - Quit app/help page"
 }

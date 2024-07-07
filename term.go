@@ -67,32 +67,39 @@ func PlannerList(tasks []Task, finished []Task, weekday int, w *goncurses.Window
 	}
 	w.AttrOff(goncurses.A_BOLD)
 
-	w.AttrOn(goncurses.A_UNDERLINE)
 	w.Move(5, 3)
+	w.AttrOn(goncurses.A_UNDERLINE)
 	list_header, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "list_header"})
 	w.Print(list_header)
-	w.Move(5, 70)
+	w.AttrOff(goncurses.A_UNDERLINE)
+	w.Println("")
+	w.Println("")
+
+	task_counter := 0
+	for _, task := range tasks {
+		if task.day == weekday {
+			task_counter++
+		}
+		task.Render(w, weekday)
+	}
+
+	w.Println("")
+	w.Println("")
+	y, _ := w.CursorYX()
+	w.Move(y, 3)
+	w.AttrOn(goncurses.A_UNDERLINE)
 	done_header, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "done_header"})
 	w.Print(done_header)
 	w.AttrOff(goncurses.A_UNDERLINE)
 	w.Println("")
 	w.Println("")
 
-	y, _ := w.CursorYX()
-	task_counter := 0
-	for _, task := range tasks {
-		if task.day == weekday {
-			task_counter++
-		}
-		task.Render(w, y+task_counter, weekday)
-	}
-
 	task_counter = 0
 	for _, task := range finished {
 		if task.day == weekday {
 			task_counter++
 		}
-		task.RenderDone(w, y+task_counter, weekday)
+		task.RenderDone(w, weekday)
 	}
 
 	w.Refresh()
@@ -114,11 +121,15 @@ func HelpScreen(w *goncurses.Window) {
 	add_new_task_help, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "add_new_task_help"})
 	change_task_status_help, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "change_task_help"})
 	delete_task_help, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "delete_task_help"})
+	select_day_help, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "select_day_help"})
+	select_today_help, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "select_today_help"})
 	quit_app_help, _ := localizer.Localize(&i18n.LocalizeConfig{MessageID: "quit_app_help"})
 	w.Println(show_help_page)
 	w.Println(change_task_status_help)
 	w.Println(add_new_task_help)
 	w.Println(delete_task_help)
+	w.Println(select_day_help)
+	w.Println(select_today_help)
 	w.Println(quit_app_help)
 	w.Println("")
 
