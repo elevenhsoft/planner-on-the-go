@@ -10,7 +10,7 @@
 	"delete_task_info": "Delete? [number] / 0 - cancel: ",
 	"new_task_header": "Add new Task",
 	"todo_prompt": "To Do: ",
-	"list_header": "Your tasks to-do this day!",
+	"list_header": "Your tasks to-do!",
 	"done_header": "You have done this!",
 	"help_header": "Planner on the Go - Help",
 	"help_info": "List of possible actions, type the letter and press Enter.",

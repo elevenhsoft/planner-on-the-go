@@ -10,7 +10,7 @@
 	"delete_task_info": "Usunac? [numer] / 0 - anuluj: ",
 	"new_task_header": "Dodaj nowe Zadanie",
 	"todo_prompt": "Do Zrobienia: ",
-	"list_header": "Zadania do zrobienia dzisiaj!",
+	"list_header": "Zadania do zrobienia!",
 	"done_header": "Ukonczone zadania!",
 	"help_header": "Planner on the Go - Pomoc",
 	"help_info": "Lista mozliwych akcji. Wpisz litere i nacisnij Enter.",
