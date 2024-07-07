@@ -48,12 +48,15 @@ func main() {
 		case Help:
 			HelpScreen(src)
 
+			y, _ := src.MaxYX()
+			src.Move(y-1, 0)
 			src.Print(":")
 			char, _ := src.GetString(1)
 
 			if char == "q" {
 				screen = List
 			}
+
 		case Form:
 			task, err := InputField(src, tasks[len(tasks)-1].id+1)
 
@@ -71,7 +74,8 @@ func main() {
 		case List:
 			PlannerList(tasks, finished_tasks, src)
 
-			src.Move(0, 0)
+			y, _ := src.MaxYX()
+			src.Move(y-1, 0)
 			src.Print(":")
 			char, _ := src.GetString(1)
 
