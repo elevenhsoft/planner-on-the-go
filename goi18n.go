@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -36,15 +35,6 @@ func get_linux_lang() string {
 	} else {
 		return localeParts[0]
 	}
-}
-
-func localization_init() {
-
-	bundle = i18n.NewBundle(language.English)
-	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
-	bundle.LoadMessageFile("i18n/en.json")
-	bundle.LoadMessageFile("i18n/pl.json")
-	localizer = i18n.NewLocalizer(bundle, get_linux_lang())
 }
 
 func localized_week() [7]string {
