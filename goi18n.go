@@ -1,7 +1,10 @@
 package main
 
 import (
+	"embed"
+	"encoding/json"
 	"fmt"
+	"io/fs"
 	"os"
 	"strings"
 
@@ -11,6 +14,18 @@ import (
 
 var localizer *i18n.Localizer
 var bundle *i18n.Bundle
+
+//go:embed i18n
+var i18n_files embed.FS
+
+func init_localization() {
+	bundle = i18n.NewBundle(language.English)
+	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
+	json_files, _ := fs.Sub(i18n_files, "i18n")
+	bundle.LoadMessageFileFS(json_files, "en.json")
+	bundle.LoadMessageFileFS(json_files, "pl.json")
+	localizer = i18n.NewLocalizer(bundle, get_linux_lang())
+}
 
 func get_linux_lang() string {
 	locale := os.Getenv("LANG")

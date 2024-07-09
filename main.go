@@ -1,17 +1,12 @@
 package main
 
 import (
-	"embed"
-	_ "embed"
-	"encoding/json"
-	"io/fs"
 	"log"
 	"strconv"
 	"time"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/rthornton128/goncurses"
-	"golang.org/x/text/language"
 )
 
 const (
@@ -21,21 +16,13 @@ const (
 	List
 )
 
-//go:embed i18n
-var i18n_files embed.FS
-
 func getCurrentDay() int {
 	now := time.Now()
 	return (int(now.Weekday()) + 6) % 7
 }
 
 func main() {
-	bundle = i18n.NewBundle(language.English)
-	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
-	json_files, _ := fs.Sub(i18n_files, "i18n")
-	bundle.LoadMessageFileFS(json_files, "en.json")
-	bundle.LoadMessageFileFS(json_files, "pl.json")
-	localizer = i18n.NewLocalizer(bundle, get_linux_lang())
+	init_localization()
 
 	db := DBInit()
 	conn := db.OpenConn()
